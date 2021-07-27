@@ -10,6 +10,17 @@ x + y;
 };
 
 let result = add(five, ten);
+!-/*5;
+5 < 10 > 5;
+
+if (5 < 10) {
+	return true;
+} else {
+	return false;
+}
+
+10 == 10;
+10 != 9;
 """
     tests = [
         token.Token(token.LET, "let"),
@@ -48,11 +59,50 @@ let result = add(five, ten);
         token.Token(token.IDENT, "ten"),
         token.Token(token.RPAREN, ")"),
         token.Token(token.SEMICOLON, ";"),
+        token.Token(token.BANG, "!"),
+        token.Token(token.MINUS, "-"),
+        token.Token(token.SLASH, "/"),
+        token.Token(token.ASTERISK, "*"),
+        token.Token(token.INT, "5"),
+        token.Token(token.SEMICOLON, ";"),
+        token.Token(token.INT, "5"),
+        token.Token(token.LT, "<"),
+        token.Token(token.INT, "10"),
+        token.Token(token.GT, ">"),
+        token.Token(token.INT, "5"),
+        token.Token(token.SEMICOLON, ";"),
+        token.Token(token.IF, "if"),
+        token.Token(token.LPAREN, "("),
+        token.Token(token.INT, "5"),
+        token.Token(token.LT, "<"),
+        token.Token(token.INT, "10"),
+        token.Token(token.RPAREN, ")"),
+        token.Token(token.LBRACE, "{"),
+        token.Token(token.RETURN, "return"),
+        token.Token(token.TRUE, "true"),
+        token.Token(token.SEMICOLON, ";"),
+        token.Token(token.RBRACE, "}"),
+        token.Token(token.ELSE, "else"),
+        token.Token(token.LBRACE, "{"),
+        token.Token(token.RETURN, "return"),
+        token.Token(token.FALSE, "false"),
+        token.Token(token.SEMICOLON, ";"),
+        token.Token(token.RBRACE, "}"),
+        token.Token(token.INT, "10"),
+        token.Token(token.EQ, "=="),
+        token.Token(token.INT, "10"),
+        token.Token(token.SEMICOLON, ";"),
+        token.Token(token.INT, "10"),
+        token.Token(token.NOT_EQ, "!="),
+        token.Token(token.INT, "9"),
+        token.Token(token.SEMICOLON, ";"),
         token.Token(token.EOF, ""),
     ]
 
     l = lexer.new(_input)
     for _, tt in enumerate(tests):
         tok = l.next_token()
-        assert tok._Type == tt._Type
-        assert tok._Literal == tt._Literal
+        # By default, an __eq__() method will be generated in the dataclass.
+        # This method compares the class as if it were a tuple of its fields, in order.
+        # Both instances in the comparison must be of the identical type.
+        assert tok == tt

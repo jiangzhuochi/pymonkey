@@ -20,6 +20,16 @@ INT = TokenType("INT")  # 1343456
 # Operators
 ASSIGN = TokenType("=")
 PLUS = TokenType("+")
+MINUS = TokenType("-")
+BANG = TokenType("!")
+ASTERISK = TokenType("*")
+SLASH = TokenType("/")
+
+LT = TokenType("<")
+GT = TokenType(">")
+
+EQ = TokenType("==")
+NOT_EQ = TokenType("!=")
 
 # Delimiters
 COMMA = TokenType(",")
@@ -32,3 +42,8 @@ RBRACE = TokenType("}")
 # Keywords
 FUNCTION = TokenType("FUNCTION")
 LET = TokenType("LET")
+TRUE     = TokenType("TRUE")
+FALSE    = TokenType("FALSE")
+IF       = TokenType("IF")
+ELSE     = TokenType("ELSE")
+RETURN   = TokenType("RETURN")

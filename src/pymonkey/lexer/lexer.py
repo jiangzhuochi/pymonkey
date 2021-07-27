@@ -5,19 +5,31 @@ from dataclasses import dataclass
 from pymonkey import token
 
 TOKENMAPS = {
-    "=": token.Token(token.ASSIGN, "="),
     ";": token.Token(token.SEMICOLON, ";"),
     "(": token.Token(token.LPAREN, "("),
     ")": token.Token(token.RPAREN, ")"),
     ",": token.Token(token.COMMA, ","),
-    "+": token.Token(token.PLUS, "+"),
     "{": token.Token(token.LBRACE, "{"),
     "}": token.Token(token.RBRACE, "}"),
+    "+": token.Token(token.PLUS, "+"),
+    "-": token.Token(token.MINUS, "-"),
+    "*": token.Token(token.ASTERISK, "*"),
+    "/": token.Token(token.SLASH, "/"),
+    ">": token.Token(token.GT, ">"),
+    "<": token.Token(token.LT, "<"),
     "": token.Token(token.EOF, ""),
 }
 
 
-KEYWORDS = {"fn": token.FUNCTION, "let": token.LET}
+KEYWORDS = {
+    "fn": token.FUNCTION,
+    "let": token.LET,
+    "if": token.IF,
+    "else": token.ELSE,
+    "return": token.RETURN,
+    "true": token.TRUE,
+    "false": token.FALSE,
+}
 
 
 def new(_input: str) -> Lexer:
@@ -52,7 +64,20 @@ class Lexer:
     def next_token(self) -> token.Token:
         self.skip_whitespace()
         ch = self._ch
-        tok = TOKENMAPS.get(ch)
+        if ch == "=":
+            if self.peek_char() == "=":
+                self.read_char()
+                tok = token.Token(token.EQ, "==")
+            else:
+                tok = token.Token(token.ASSIGN, "=")
+        elif ch == "!":
+            if self.peek_char() == "=":
+                self.read_char()
+                tok = token.Token(token.NOT_EQ, "!=")
+            else:
+                tok = token.Token(token.BANG, "!")
+        else:
+            tok = TOKENMAPS.get(ch)
         if tok is None:
             if is_letter(ch):
                 _literal = self.read_identifier()
@@ -83,3 +108,9 @@ class Lexer:
         while is_digit(self._ch):
             self.read_char()
         return self._input[pos : self._position]
+
+    def peek_char(self) -> str:
+        if self._read_position >= len(self._input):
+            return token.EOF
+        else:
+            return self._input[self._read_position]
